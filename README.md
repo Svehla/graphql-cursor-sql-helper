@@ -82,6 +82,12 @@ const Admin = new GraphQLObjectType({
   interfaces: [nodeInterface],
   isTypeOf: obj => instanceof sqlModelAdmin,
   fields: () => ({
+    /*
+           _          _                          _          _  
+     >(')____,  >(')____,   ... some code ...  >(')____,  >(') ___, 
+       (` =~~/    (` =~~/   ... some code ...   (` =~~/    (` =~~/ 
+    ~^~~^~^`---'~^~^~^`---'~^~^~^`---'~^~^~^`---'~^~^~^`---'~^~^~ 
+    */
     users: {
       type: connectionDefinitions({
         name: 'User',
