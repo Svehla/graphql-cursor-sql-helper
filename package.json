@@ -1,10 +1,12 @@
 {
-  "name": "sql-graphql-cursor-paginaton-helper",
+  "name": "graphql-sql-cursor-helper",
   "version": "0.0.1",
   "description": "helper for building graphql relay compatible schema with sql db",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon lib/index.js --exec babel-node",
+    "build": "babel lib -d dist"
   },
   "repository": {
     "type": "git",
@@ -24,5 +26,15 @@
   "bugs": {
     "url": "https://github.com/Svehla/graph-sql-cursor-helper/issues"
   },
-  "homepage": "https://github.com/Svehla/graph-sql-cursor-helper#readme"
+  "homepage": "https://github.com/Svehla/graph-sql-cursor-helper#readme",
+  "dependencies": {
+    "graphql": "^0.13.2",
+    "graphql-relay": "^0.5.5"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "nodemon": "^1.17.5"
+  }
 }

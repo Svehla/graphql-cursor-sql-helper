@@ -1,6 +1,8 @@
 
 # Graph SQL Cursor pagination helper
 
+
+
 ## Motivation
 This library is extension of awesome [graphql-relay-js](https://github.com/graphql/graphql-relay-js) which solve
 problem how simply implement `cursor pagination` to your SQL's dbs query without special magic.
@@ -12,6 +14,8 @@ You probably use [graphql-relay-js](https://github.com/graphql/graphql-relay-js)
 Problem with `graphql-relay-js` is that functions like `connectionFromArray(...)` works on application javascript layer. That means that process of pagination is inefficient and it takes too much RAM & CPU power.
 
 This library solve how to recalculate Pagination args (`first` & `after` & `last` & `before`) to SQL's `OFFSET` `LIMIT` params. 
+
+
 
 ### Another benefics
 We added `totalCount` field to graphQl schema. At the moment `graphql-relay-js` does not implement it yet.
@@ -33,18 +37,24 @@ connectionDefinitions({
 }).connectionType,
 ```
 *note: connectionField param of connectionDefinition is not documented in readme yet. But you can find implementation here: [implemenation of connectionFields in relay-graphql-js ](https://github.com/graphql/graphql-relay-js/blob/4fdadd3bbf3d5aaf66f1799be3e4eb010c115a4a/src/connection/connection.js#L89)*
+
+
+
 ## Instalation 
 ```bash
-yarn add graph-sql-cursor-helper
+yarn add graphql-sql-cursor-helper
 ```
 or
 ```bash
-npm install graph-sql-cursor-helper --save
+npm install graphql-sql-cursor-helper
 ```
+
+
 
 ## API
 library provide this function:
 - `connectionFromPromisedSqlResult`
+
 
 ### `connectionFromPromisedSqlResult(...)`
 #### Params
@@ -55,8 +65,10 @@ library provide this function:
 #### return
  - Connection with sql results & totalCount
 
-#### Example
-##### Raw function API example
+
+
+## Example
+### Raw function API example
 
 ```javascript
 // graphql resolver
@@ -73,7 +85,7 @@ return connectionFromPromisedSqlResult(
 )
 ```
 
-##### Example with graphQl resolver for users
+### Example with graphQl resolver for users
 
 ```javascript
 const Admin = new GraphQLObjectType({
@@ -83,7 +95,7 @@ const Admin = new GraphQLObjectType({
   isTypeOf: obj => instanceof sqlModelAdmin,
   fields: () => ({
     /*
-           _          _                          _          _  
+       _          _                              _          _  
      >(')____,  >(')____,   ... some code ...  >(')____,  >(') ___, 
        (` =~~/    (` =~~/   ... some code ...   (` =~~/    (` =~~/ 
     ~^~~^~^`---'~^~^~^`---'~^~^~^`---'~^~^~^`---'~^~^~^`---'~^~^~ 
@@ -101,7 +113,6 @@ const Admin = new GraphQLObjectType({
       args: connectionArgs,
       description: `...`,
       resolve: async (parent, paginationArgs) => {
-
         // call `graphql-sql-cursor-helper` function for calculating real OFFSET & LIMIT
         return connectionFromPromisedSqlResult(
           await someOrmSqlModel.getTotalCount(), // <- this 
