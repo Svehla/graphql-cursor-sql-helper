@@ -1,6 +1,14 @@
 
-# Graph SQL Cursor pagination helper
+# TODO: implement this lib to npm
 
+___________________________________
+
+___________________________________
+
+
+
+# Graph SQL Cursor pagination helper
+:purple_heart: *Made with Love by Svehla* :blue_heart:
 
 
 ## Motivation
@@ -14,7 +22,6 @@ You probably use [graphql-relay-js](https://github.com/graphql/graphql-relay-js)
 Problem with `graphql-relay-js` is that functions like `connectionFromArray(...)` works on application javascript layer. That means that process of pagination is inefficient and it takes too much RAM & CPU power.
 
 This library solve how to recalculate Pagination args (`first` & `after` & `last` & `before`) to SQL's `OFFSET` `LIMIT` params. 
-
 
 
 ### Another benefics
@@ -36,7 +43,17 @@ connectionDefinitions({
   }
 }).connectionType,
 ```
-*note: connectionField param of connectionDefinition is not documented in readme yet. But you can find implementation here: [implemenation of connectionFields in relay-graphql-js ](https://github.com/graphql/graphql-relay-js/blob/4fdadd3bbf3d5aaf66f1799be3e4eb010c115a4a/src/connection/connection.js#L89)*
+
+
+**note1: connectionField param of connectionDefinition is not documented in readme yet. But you can find implementation here: [implemenation of connectionFields in relay-graphql-js ](https://github.com/graphql/graphql-relay-js/blob/4fdadd3bbf3d5aaf66f1799be3e4eb010c115a4a/src/connection/connection.js#L89)**
+
+
+
+** note2: last param is meaning last added item, not last in array **
+
+So if you select `last` 3 items it generate:
+- offset: 0 
+- limit: 3
 
 
 
@@ -58,9 +75,9 @@ library provide this function:
 
 ### `connectionFromPromisedSqlResult(...)`
 #### Params
- - *totalCount* - count of line for whole SQL SELECT 
- - *paginationArgs* - provided from `connectionArgs` fn from `graphql-relay-js`
- - *callbackWithValues* - callback return object with `offset` and `limit` computed values
+ - **totalCount** - count of line for whole SQL SELECT 
+ - **paginationArgs** - provided from `connectionArgs` fn from `graphql-relay-js`
+ - **callbackWithValues** - callback return object with `offset` and `limit` computed values
 
 #### return
  - Connection with sql results & totalCount
@@ -88,6 +105,13 @@ return connectionFromPromisedSqlResult(
 ### Example with graphQl resolver for users
 
 ```javascript
+import { connectionFromPromisedSqlResult } from 'graphql-sql-cursor-helper'
+/*
+    _          _                              _          _  
+  >(')____,  >(')____,   ... some code ...  >(')____,  >(') ___, 
+    (` =~~/    (` =~~/   ... some code ...   (` =~~/    (` =~~/ 
+~^~~^~^`---'~^~^~^`---'~^~^~^`---'~^~^~^`---'~^~^~^`---'~^~^~ 
+*/
 const Admin = new GraphQLObjectType({
   name: 'Admin',
   description: '...',
