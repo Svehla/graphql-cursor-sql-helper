@@ -8,7 +8,7 @@ ___________________________________
 
 
 # Graph SQL Cursor pagination helper
-:purple_heart: *Made with Love by Svehla* :blue_heart:
+:purple_heart: :blue_heart: :purple_heart: *Made with Love by Kuba Svehla* :purple_heart: :blue_heart: :purple_heart:
 
 
 ## Motivation
@@ -155,7 +155,6 @@ const Admin = new GraphQLObjectType({
 
 
 ## Contributing
-
 After cloning this repo, ensure dependencies are installed by running:
 
 `npm install` or `yarn`
