@@ -1,0 +1,28 @@
+{
+  "name": "sql-graphql-cursor-paginaton-helper",
+  "version": "0.0.1",
+  "description": "helper for building graphql relay compatible schema with sql db",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Svehla/graph-sql-cursor-helper.git"
+  },
+  "keywords": [
+    "graphql",
+    "sql",
+    "cursor",
+    "pagination",
+    "relay",
+    "schema",
+    "compatible"
+  ],
+  "author": "Jakub Švehla",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Svehla/graph-sql-cursor-helper/issues"
+  },
+  "homepage": "https://github.com/Svehla/graph-sql-cursor-helper#readme"
+}
