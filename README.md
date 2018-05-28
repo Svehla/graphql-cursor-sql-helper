@@ -1,10 +1,7 @@
 
-# TODO: implement this lib to npm
+# TODO: add this lib to npm
 
 ___________________________________
-
-___________________________________
-
 
 
 # Graph SQL Cursor pagination helper
