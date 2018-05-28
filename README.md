@@ -49,9 +49,9 @@ connectionDefinitions({
 
 
 
-** note2: last param is meaning last added item, not last in array **
+** note2: `first` param is meaning last added nodes -> not `first` position in array **
 
-So if you select `last` 3 items it generate:
+So if you select `first` 3 items it generate:
 - offset: 0 
 - limit: 3
 
@@ -152,3 +152,18 @@ const Admin = new GraphQLObjectType({
   })
 })
 ```
+
+
+## Contributing
+
+After cloning this repo, ensure dependencies are installed by running:
+
+`npm install` or `yarn`
+
+Develop by 
+
+`yarn run start` or `npm run start`
+
+Test changes by 
+
+`yarn run test` or `npm run test`

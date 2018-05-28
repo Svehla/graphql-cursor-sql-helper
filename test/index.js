@@ -16,9 +16,9 @@ const getFakeSqlData = ({ offset, limit }) => {
   return fakeData.splice(firstIndex, lastIndex)
 }
 
-describe('sql-graphql-cursor-helper', () => {
-  describe('connectionFromPromisedSqlResult', async () => {
-
+describe('Sql-graphql-cursor-helper', () => {
+  describe('Check connectionFromPromisedSqlResult', async () => {
+    // TODO: implement test for each functionality
     // possible args
     // const args = {
     //   after,
@@ -26,9 +26,9 @@ describe('sql-graphql-cursor-helper', () => {
     //   first: 2,
     //   last
     // }
-    it('get correct totalCount', async () => {
+    it('Get correct totalCount', async () => {
       const mockTotalCount = 5
-      const lastNItems = 4
+      const lastNItems = 3
       const sqlResult = await connectionFromPromisedSqlResult(
         mockTotalCount,
         { last: lastNItems },
@@ -36,6 +36,8 @@ describe('sql-graphql-cursor-helper', () => {
       )
       assert.equal(sqlResult.totalCount, mockTotalCount);
       assert.equal(sqlResult.edges.length, lastNItems);
+      assert.equal(sqlResult.edges[1].node.id, 3);
+      assert.equal(sqlResult.edges[2].node.id, 4);
     });
   });
 });
