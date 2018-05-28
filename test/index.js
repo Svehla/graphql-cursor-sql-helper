@@ -13,6 +13,7 @@ const fakeData = [
 const getFakeSqlData = ({ offset, limit }) => {
   const firstIndex = offset
   const lastIndex = offset + limit
+  console.log(offset, limit)
   return fakeData.splice(firstIndex, lastIndex)
 }
 
@@ -38,6 +39,17 @@ describe('Sql-graphql-cursor-helper', () => {
       assert.equal(sqlResult.edges.length, lastNItems);
       assert.equal(sqlResult.edges[1].node.id, 3);
       assert.equal(sqlResult.edges[2].node.id, 4);
+    });
+
+    it('Get correct totalCount', async () => {
+      const mockTotalCount = 50
+      const lastNItems = 3
+      const sqlResult = await connectionFromPromisedSqlResult(
+        mockTotalCount,
+        { last: lastNItems },
+        ({ offset, limit }) => getFakeSqlData({ offset, limit })
+      )
+      assert.equal(sqlResult.totalCount, mockTotalCount);
     });
   });
 });

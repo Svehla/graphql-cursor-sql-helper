@@ -46,10 +46,16 @@ connectionDefinitions({
 
 
 
-** note2: `first` param is meaning last added nodes -> not `first` position in array **
+**note2: `first` param is meaning last added nodes -> not `first` positions in array**
 
-So if you select `first` 3 items it generate:
+So if you select 
+
+`first` 3 items from 50 it generate:
 - offset: 0 
+- limit: 3
+
+`last` 3 items from 50 it generate:
+- offset: 47
 - limit: 3
 
 
