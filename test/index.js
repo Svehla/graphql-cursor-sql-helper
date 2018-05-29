@@ -3,15 +3,10 @@ import assert from 'assert';
 import { connectionFromPromisedSqlResult } from '../lib'
 import { offsetToCursor } from 'graphql-relay'
 
-// TODO: implement [ 'A', 'B', 'C', 'D', 'E' ]
+// tests are inspired by:
 // https://github.com/graphql/graphql-relay-js/blob/4fdadd3bbf3d5aaf66f1799be3e4eb010c115a4a/src/connection/__tests__/arrayconnection.js#L658
-const fakeData = [
-  { id: 0, name: "0" },
-  { id: 1, name: "a" },
-  { id: 2, name: "b" },
-  { id: 3, name: "c" },
-  { id: 4, name: "d" }
-]
+
+const fakeData = [ 'A', 'B', 'C', 'D', 'E' ]
 
 const getFakeSqlData = ({ offset, limit }) => {
   const firstIndex = offset
@@ -21,7 +16,7 @@ const getFakeSqlData = ({ offset, limit }) => {
 
 describe('Sql-graphql-cursor-helper', () => {
   describe('Check connectionFromPromisedSqlResult', async () => {
-    it('Get correct totalCount', async () => {
+    it('works with last arg', async () => {
       const mockTotalCount = 5
       const lastNItems = 3
       const sqlResult = await connectionFromPromisedSqlResult(
@@ -29,27 +24,32 @@ describe('Sql-graphql-cursor-helper', () => {
         { last: lastNItems },
         ({ offset, limit }) => getFakeSqlData({ offset, limit })
       )
-      assert.equal(sqlResult.totalCount, mockTotalCount);
-      assert.equal(sqlResult.edges.length, lastNItems);
+      assert.deepEqual(sqlResult, {
+        edges: [
+          {
+            node: 'C',
+            cursor: offsetToCursor(2),
+          },
+          {
+            node: 'D',
+            cursor: offsetToCursor(3),
+          },
+          {
+            node: 'E',
+            cursor: offsetToCursor(4),
+          },
+        ],
+        pageInfo: {
+          startCursor: offsetToCursor(0),
+          endCursor: offsetToCursor(4),
+          hasPreviousPage: true,
+          hasNextPage: false,
+        },
+        totalCount: 5
+      });
     });
 
-    it('Check last param', async () => {
-      const mockTotalCount = 5
-      const lastNItems = 3
-      const sqlResult = await connectionFromPromisedSqlResult(
-        mockTotalCount,
-        { last: lastNItems },
-        ({ offset, limit }) => getFakeSqlData({ offset, limit })
-      )
-      assert.equal(sqlResult.edges.length, lastNItems);
-      assert.equal(sqlResult.edges[0].node.id, 2);
-      assert.equal(sqlResult.edges[0].node.name, "b");
-      assert.equal(sqlResult.edges[1].node.id, 3);
-      assert.equal(sqlResult.edges[2].node.id, 4);
-      assert.equal(sqlResult.edges[2].node.name, "d");
-    });
-
-    it('Check first param', async () => {
+    it('works with first arg', async () => {
       const mockTotalCount = 50
       const lastNItems = 3
       const sqlResult = await connectionFromPromisedSqlResult(
@@ -57,48 +57,68 @@ describe('Sql-graphql-cursor-helper', () => {
         { first: lastNItems },
         ({ offset, limit }) => getFakeSqlData({ offset, limit })
       )
-      assert.equal(sqlResult.edges.length, lastNItems);
-      assert.equal(sqlResult.edges[0].node.id, 0);
-      assert.equal(sqlResult.edges[0].node.name, "0");
-      assert.equal(sqlResult.edges[1].node.id, 1);
-      assert.equal(sqlResult.edges[2].node.id, 2);
-      assert.equal(sqlResult.edges[2].node.name, "b");
+      assert.deepEqual(sqlResult, {
+        edges: [
+          {
+            node: 'A',
+            cursor: offsetToCursor(0),
+          },
+          {
+            node: 'B',
+            cursor: offsetToCursor(1),
+          },
+          {
+            node: 'C',
+            cursor: offsetToCursor(2),
+          },
+        ],
+        pageInfo: {
+          startCursor: offsetToCursor(0),
+          endCursor: offsetToCursor(49),
+          hasPreviousPage: false,
+          hasNextPage: true,
+        },
+        totalCount: 50
+      });
     });
 
-    it('Start & end cursor', async () => {
-      const mockTotalCount = 5
-      const firstNItem = 3
-      const sqlResult = await connectionFromPromisedSqlResult(
-        mockTotalCount,
-        { first: firstNItem },
-        ({ offset, limit }) => getFakeSqlData({ offset, limit })
-      )
-      assert.equal(sqlResult.edges.length, firstNItem);
-      assert.equal(sqlResult.pageInfo.startCursor, offsetToCursor(0));
-      // last index of mockedDataArray
-      assert.equal(sqlResult.pageInfo.endCursor, offsetToCursor(4));
-    });
 
-    it('validate after cursor ', async () => {
+    it('works with first & after args', async () => {
       const mockTotalCount = 5
-      const firstNItem = 2
+      const firstNItems = 3
       const sqlResult = await connectionFromPromisedSqlResult(
         mockTotalCount,
         {
-          // get items after first index
-          after: offsetToCursor(1),
-          first: firstNItem
+          first: firstNItems,
+          after: offsetToCursor(2)
         },
         ({ offset, limit }) => getFakeSqlData({ offset, limit })
       )
-      console.log(`JSON.stringify(sqlResult, null, 2)`)
-      console.log(JSON.stringify(sqlResult, null, 2))
-      assert.equal(sqlResult.edges.length, 2);
-      assert.equal(sqlResult.edges[0].cursor, offsetToCursor(2));
-      assert.equal(sqlResult.edges[0].node.id, 2);
+      assert.deepEqual(sqlResult, {
+        edges: [
+          {
+            node: 'D',
+            cursor: offsetToCursor(3),
+          },
+          {
+            node: 'E',
+            cursor: offsetToCursor(4),
+          }
+        ],
+        pageInfo: {
+          startCursor: offsetToCursor(0),
+          endCursor: offsetToCursor(4),
+          // TODO: is really previous page false?
+          // Or when i use before logic is reversed
+          hasPreviousPage: false,
+          hasNextPage: false,
+        },
+        totalCount: 5
+      });
     });
+    
 
-    it('validate before cursor ', async () => {
+    it('works with before arg', async () => {
       const mockTotalCount = 5
       const firstNItem = 2
       const sqlResult = await connectionFromPromisedSqlResult(
@@ -110,16 +130,28 @@ describe('Sql-graphql-cursor-helper', () => {
         },
         ({ offset, limit }) => getFakeSqlData({ offset, limit })
       )
-      console.log(`JSON.stringify(sqlResult, null, 2)`)
-      console.log(JSON.stringify(sqlResult, null, 2))
-      assert.equal(sqlResult.edges.length, 1);
-      assert.equal(sqlResult.edges[0].cursor, offsetToCursor(0));
-      assert.equal(sqlResult.edges[0].node.id, 0);
+      assert.deepEqual(sqlResult, {
+        edges: [
+          {
+            node: 'A',
+            cursor: offsetToCursor(0),
+          }
+        ],
+        pageInfo: {
+          startCursor: offsetToCursor(0),
+          endCursor: offsetToCursor(4),
+          hasPreviousPage: false,
+          // TODO: next page should be true
+          // Or when i use before logic is reversed
+          hasNextPage: false,
+        },
+        totalCount: 5
+      });
     });
 
 
     // tests for empty sql tablw
-    it('Start & end cursor for empty array', async () => {
+    it('works with empty array', async () => {
       const mockTotalCount = 0
       const firstNItem = 3
       const sqlResult = await connectionFromPromisedSqlResult(
@@ -127,13 +159,18 @@ describe('Sql-graphql-cursor-helper', () => {
         { first: firstNItem },
         ({ offset, limit }) => [] // return empty array
       )
-      assert.equal(sqlResult.pageInfo.startCursor, null);
-      assert.equal(sqlResult.pageInfo.endCursor, null);
-      assert.equal(sqlResult.pageInfo.hasPreviousPage, false);
-      assert.equal(sqlResult.pageInfo.hasNextPage, false);
-      assert.deepEqual(sqlResult.edges, []);
-      assert.equal(sqlResult.edges.length, 0);
+      assert.deepEqual(sqlResult, {
+        edges: [],
+        pageInfo: {
+          startCursor: null,
+          endCursor: null,
+          hasPreviousPage: false,
+          // TODO: next page should be true
+          // Or when i use before logic is reversed
+          hasNextPage: false,
+        },
+        totalCount: 0
+      });
     });
-
   });
 });
