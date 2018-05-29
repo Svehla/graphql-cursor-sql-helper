@@ -4,7 +4,7 @@
 ___________________________________
 
 
-# Graph SQL Cursor pagination helper
+# Graph SQL Cursor pagination helper for relay compatible schema
 :purple_heart: :blue_heart: :purple_heart: *Made with Love by Kuba Svehla* :purple_heart: :blue_heart: :purple_heart:
 
 
@@ -32,7 +32,7 @@ If you want to enable `totalCount` you have to set it to your `connectionDefinit
 ```javascript 
 connectionDefinitions({
   name: 'User',
-  nodeType: ChatMessageType,
+  nodeType: UserType,
   // adding connectionFields to type
   // is necessary for quering totalCount in graphQl
   connectionFields: {
@@ -100,7 +100,7 @@ return connectionFromPromisedSqlResult(
   // get computed values for sql pagination
   ({ offset, limit }) => (
     // applying it to sql select for native sql pagination
-    someOrmSqlModel.getMessages({ offset, limit })
+    someOrmSqlModel.getData({ offset, limit })
   )
 )
 ```
@@ -147,7 +147,7 @@ const Admin = new GraphQLObjectType({
           // get computed values for sql pagination
           ({ offset, limit }) => (
             // applying it to sql select for native sql pagination
-            someOrmSqlModel.getMessages({ offset, limit })
+            someOrmSqlModel.getUsers({ offset, limit })
           )
         )
       }
@@ -158,6 +158,7 @@ const Admin = new GraphQLObjectType({
 
 
 ## Contributing
+
 After cloning this repo, ensure dependencies are installed by running:
 
 `npm install` or `yarn`
