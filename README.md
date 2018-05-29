@@ -1,5 +1,5 @@
 
-# Graph SQL Cursor pagination helper for relay compatible schema
+# GraphQl cursor SQL pagination helper for relay compatible schema
 :purple_heart: :blue_heart: :purple_heart: *Made with Love by Kuba Svehla* :purple_heart: :blue_heart: :purple_heart:
 
 

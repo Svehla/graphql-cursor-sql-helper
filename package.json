@@ -1,5 +1,5 @@
 {
-  "name": "graphql-sql-cursor-helper",
+  "name": "graphql-cursor-sql-helper",
   "version": "0.0.1",
   "description": "helper for building graphql relay compatible schema with sql db",
   "main": "build/index.js",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Svehla/graphql-sql-cursor-helper.git"
+    "url": "git+https://github.com/Svehla/graphql-cursor-sql-helper.git"
   },
   "keywords": [
     "graphql",
@@ -27,9 +27,9 @@
   "author": "Jakub Švehla",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Svehla/graphql-sql-cursor-helper/issues"
+    "url": "https://github.com/Svehla/graphql-cursor-sql-helper/issues"
   },
-  "homepage": "https://github.com/Svehla/graphql-sql-cursor-helper#readme",
+  "homepage": "https://github.com/Svehla/git#readme",
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "graphql": "^0.13.2",
