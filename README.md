@@ -1,15 +1,10 @@
 
-# TODO: add this lib to npm
-
-___________________________________
-
-
 # Graph SQL Cursor pagination helper for relay compatible schema
 :purple_heart: :blue_heart: :purple_heart: *Made with Love by Kuba Svehla* :purple_heart: :blue_heart: :purple_heart:
 
 
 ## Motivation
-This library is extension of awesome [graphql-relay-js](https://github.com/graphql/graphql-relay-js) which solve
+This library is the extension of awesome [graphql-relay-js](https://github.com/graphql/graphql-relay-js) which solve
 problem how simply implement `cursor pagination` to your SQL's dbs query without special magic.
 
 If you're creating GraphQl schema which is compatible with relay cursor pagination
@@ -21,7 +16,7 @@ Problem with `graphql-relay-js` is that functions like `connectionFromArray(...)
 This library solve how to recalculate Pagination args (`first` & `after` & `last` & `before`) to SQL's `OFFSET` `LIMIT` params. 
 
 
-### Another benefics
+### Another benefits
 We added `totalCount` field to graphQl schema. At the moment `graphql-relay-js` does not implement it yet.
 We decided that `totalCount` is productive for and you have option to set it.
 
@@ -34,7 +29,7 @@ connectionDefinitions({
   name: 'User',
   nodeType: UserType,
   // adding connectionFields to type
-  // is necessary for quering totalCount in graphQl
+  // is necessary for querying totalCount in graphQl
   connectionFields: {
     totalCount: { type: new GraphQLNonNull(GraphQLInt) }
   }

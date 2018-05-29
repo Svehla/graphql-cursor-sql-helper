@@ -108,8 +108,7 @@ describe('Sql-graphql-cursor-helper', () => {
         pageInfo: {
           startCursor: offsetToCursor(0),
           endCursor: offsetToCursor(4),
-          // TODO: is really previous page false?
-          // Or when i use before logic is reversed
+          // hasPreviousPage has same behavior as relay-graphql-js 
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -141,8 +140,7 @@ describe('Sql-graphql-cursor-helper', () => {
           startCursor: offsetToCursor(0),
           endCursor: offsetToCursor(4),
           hasPreviousPage: false,
-          // TODO: next page should be true
-          // Or when i use before logic is reversed
+          // hasPreviousPage has same behavior as relay-graphql-js 
           hasNextPage: false,
         },
         totalCount: 5
@@ -165,8 +163,7 @@ describe('Sql-graphql-cursor-helper', () => {
           startCursor: null,
           endCursor: null,
           hasPreviousPage: false,
-          // TODO: next page should be true
-          // Or when i use before logic is reversed
+          // hasPreviousPage has same behavior as relay-graphql-js 
           hasNextPage: false,
         },
         totalCount: 0
