@@ -14,7 +14,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 // for identify of row we use index (not ID)
 var connectionFromPromisedSqlResult = exports.connectionFromPromisedSqlResult = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(totalCount, args, getDataCb) {
-    var after, before, first, last, sliceStart, sliceEnd, beforeOffset, afterOffset, startOffset, endOffset, offset, limitIndex, limit, sqlResult, edges, lowerBound, upperBound;
+    var after, before, first, last, sliceStart, sliceEnd, beforeOffset, afterOffset, startOffset, endOffset, offset, limitIndex, limit, sqlResult, edges, lowerBound, upperBound, lastNodeIndex;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -93,18 +93,21 @@ var connectionFromPromisedSqlResult = exports.connectionFromPromisedSqlResult = 
             });
             lowerBound = after ? afterOffset + 1 : 0;
             upperBound = before ? beforeOffset : totalCount;
+            lastNodeIndex = totalCount - 1; // index start from 0
+
             return _context.abrupt('return', {
               totalCount: totalCount,
               pageInfo: {
-                startCursor: totalCount >= 0 ? (0, _graphqlRelay.offsetToCursor)(0) : null,
-                endCursor: totalCount >= 0 ? (0, _graphqlRelay.offsetToCursor)(totalCount) : null,
+                // if length === 0 than cursors are null => no data provided
+                startCursor: totalCount > 0 ? (0, _graphqlRelay.offsetToCursor)(0) : null,
+                endCursor: totalCount > 0 ? (0, _graphqlRelay.offsetToCursor)(lastNodeIndex) : null,
                 hasPreviousPage: typeof last === 'number' ? startOffset > lowerBound : false,
                 hasNextPage: typeof first === 'number' ? endOffset < upperBound : false
               },
               edges: edges
             });
 
-          case 30:
+          case 31:
           case 'end':
             return _context.stop();
         }

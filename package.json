@@ -2,12 +2,14 @@
   "name": "graphql-sql-cursor-helper",
   "version": "0.0.1",
   "description": "helper for building graphql relay compatible schema with sql db",
-  "main": "dist/index.js",
+  "main": "build/index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register",
     "test:watch": "mocha --compilers js:babel-core/register --watch --recursive",
     "start": "nodemon lib/index.js --exec babel-node",
-    "build": "babel lib -d dist"
+    "clean": "rm -rf build && mkdir build",
+    "build-lib": "babel lib -d build",
+    "build": "npm run clean && npm run build-lib"
   },
   "repository": {
     "type": "git",
@@ -29,6 +31,7 @@
   },
   "homepage": "https://github.com/Svehla/graphql-sql-cursor-helper#readme",
   "dependencies": {
+    "babel-runtime": "^6.26.0",
     "graphql": "^0.13.2",
     "graphql-relay": "^0.5.5"
   },
