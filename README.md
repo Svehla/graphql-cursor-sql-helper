@@ -57,11 +57,11 @@ So if you select
 
 ## Instalation 
 ```bash
-yarn add graphql-sql-cursor-helper
+yarn add graphql-cursor-sql-helper
 ```
 or
 ```bash
-npm install graphql-sql-cursor-helper
+npm install graphql-cursor-sql-helper
 ```
 
 
@@ -103,7 +103,7 @@ return connectionFromPromisedSqlResult(
 ### Example with graphQl resolver for users
 
 ```javascript
-import { connectionFromPromisedSqlResult } from 'graphql-sql-cursor-helper'
+import { connectionFromPromisedSqlResult } from 'graphql-cursor-sql-helper'
 /*
     _          _                              _          _  
   >(')____,  >(')____,   ... some code ...  >(')____,  >(') ___, 
