@@ -1,14 +1,16 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.connectionFromPromisedSqlResult = undefined;
 
-var _graphqlRelay = require('graphql-relay');
+var _graphqlRelay = require("graphql-relay");
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+require("babel-core/register");
+require("babel-polyfill");
 // part of logic for this source is borrowed from
 // https://github.com/graphql/graphql-relay-js/blob/master/src/utils/base64.js
 // for identify of row we use index (not ID)
@@ -95,7 +97,7 @@ var connectionFromPromisedSqlResult = exports.connectionFromPromisedSqlResult = 
             upperBound = before ? beforeOffset : totalCount;
             lastNodeIndex = totalCount - 1; // index start from 0
 
-            return _context.abrupt('return', {
+            return _context.abrupt("return", {
               totalCount: totalCount,
               pageInfo: {
                 // if length === 0 than cursors are null => no data provided
@@ -108,7 +110,7 @@ var connectionFromPromisedSqlResult = exports.connectionFromPromisedSqlResult = 
             });
 
           case 31:
-          case 'end':
+          case "end":
             return _context.stop();
         }
       }
