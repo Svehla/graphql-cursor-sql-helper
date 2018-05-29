@@ -68,10 +68,10 @@ npm install graphql-cursor-sql-helper
 
 ## API
 library provide this function:
-- `connectionFromPromisedSqlResult`
+- `connectionToSqlQuery`
 
 
-### `connectionFromPromisedSqlResult(...)`
+### `connectionToSqlQuery(...)`
 #### Params
  - **totalCount** - count of line for whole SQL SELECT 
  - **paginationArgs** - provided from `connectionArgs` fn from `graphql-relay-js`
@@ -88,7 +88,7 @@ library provide this function:
 ```javascript
 // graphql resolver
 // ...
-return connectionFromPromisedSqlResult(
+return connectionToSqlQuery(
   // this return totalCount for current select
   await someOrmSqlModel.getTotalCount(), 
   paginationArgs,
@@ -103,7 +103,7 @@ return connectionFromPromisedSqlResult(
 ### Example with graphQl resolver for users
 
 ```javascript
-import { connectionFromPromisedSqlResult } from 'graphql-cursor-sql-helper'
+import { connectionToSqlQuery } from 'graphql-cursor-sql-helper'
 /*
     _          _                              _          _  
   >(')____,  >(')____,   ... some code ...  >(')____,  >(') ___, 
@@ -136,7 +136,7 @@ const Admin = new GraphQLObjectType({
       description: `...`,
       resolve: async (parent, paginationArgs) => {
         // call `graphql-sql-cursor-helper` function for calculating real OFFSET & LIMIT
-        return connectionFromPromisedSqlResult(
+        return connectionToSqlQuery(
           await someOrmSqlModel.getTotalCount(), // <- this 
           paginationArgs,
           // get computed values for sql pagination

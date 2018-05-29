@@ -1,6 +1,6 @@
 import 'babel-polyfill'
 import assert from 'assert';
-import { connectionFromPromisedSqlResult } from '../lib'
+import { connectionToSqlQuery } from '../lib'
 import { offsetToCursor } from 'graphql-relay'
 
 // tests are inspired by:
@@ -15,11 +15,11 @@ const getFakeSqlData = ({ offset, limit }) => {
 }
 
 describe('Sql-graphql-cursor-helper', () => {
-  describe('Check connectionFromPromisedSqlResult', async () => {
+  describe('Check connectionToSqlQuery', async () => {
     it('works with last arg', async () => {
       const mockTotalCount = 5
       const lastNItems = 3
-      const sqlResult = await connectionFromPromisedSqlResult(
+      const sqlResult = await connectionToSqlQuery(
         mockTotalCount,
         { last: lastNItems },
         ({ offset, limit }) => getFakeSqlData({ offset, limit })
@@ -52,7 +52,7 @@ describe('Sql-graphql-cursor-helper', () => {
     it('works with first arg', async () => {
       const mockTotalCount = 50
       const lastNItems = 3
-      const sqlResult = await connectionFromPromisedSqlResult(
+      const sqlResult = await connectionToSqlQuery(
         mockTotalCount,
         { first: lastNItems },
         ({ offset, limit }) => getFakeSqlData({ offset, limit })
@@ -86,7 +86,7 @@ describe('Sql-graphql-cursor-helper', () => {
     it('works with first & after args', async () => {
       const mockTotalCount = 5
       const firstNItems = 3
-      const sqlResult = await connectionFromPromisedSqlResult(
+      const sqlResult = await connectionToSqlQuery(
         mockTotalCount,
         {
           first: firstNItems,
@@ -120,7 +120,7 @@ describe('Sql-graphql-cursor-helper', () => {
     it('works with before arg', async () => {
       const mockTotalCount = 5
       const firstNItem = 2
-      const sqlResult = await connectionFromPromisedSqlResult(
+      const sqlResult = await connectionToSqlQuery(
         mockTotalCount,
         {
           // get items after first index
@@ -147,15 +147,36 @@ describe('Sql-graphql-cursor-helper', () => {
       });
     });
 
-
     // tests for empty sql tablw
     it('works with empty array', async () => {
       const mockTotalCount = 0
       const firstNItem = 3
-      const sqlResult = await connectionFromPromisedSqlResult(
+      const sqlResult = await connectionToSqlQuery(
         mockTotalCount,
         { first: firstNItem },
         ({ offset, limit }) => [] // return empty array
+      )
+      assert.deepEqual(sqlResult, {
+        edges: [],
+        pageInfo: {
+          startCursor: null,
+          endCursor: null,
+          hasPreviousPage: false,
+          // hasPreviousPage has same behavior as relay-graphql-js 
+          hasNextPage: false,
+        },
+        totalCount: 0
+      });
+    });
+
+    // tests for empty sql tablw
+    it('Promises input for totalCount', async () => {
+      const mockTotalCount = 0
+      const firstNItem = 3
+      const sqlResult = await connectionToSqlQuery(
+        Promise.resolve(mockTotalCount),
+        { first: firstNItem },
+        ({ offset, limit }) => Promise.resolve([]) // return empty array
       )
       assert.deepEqual(sqlResult, {
         edges: [],

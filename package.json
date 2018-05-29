@@ -1,6 +1,6 @@
 {
   "name": "graphql-cursor-sql-helper",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "helper for building graphql relay compatible schema with sql db",
   "main": "build/index.js",
   "scripts": {

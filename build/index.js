@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.connectionFromPromisedSqlResult = undefined;
+exports.connectionToSqlQuery = undefined;
 
 var _graphqlRelay = require("graphql-relay");
 
@@ -14,13 +14,18 @@ require("babel-polyfill");
 // part of logic for this source is borrowed from
 // https://github.com/graphql/graphql-relay-js/blob/master/src/utils/base64.js
 // for identify of row we use index (not ID)
-var connectionFromPromisedSqlResult = exports.connectionFromPromisedSqlResult = function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(totalCount, args, getDataCb) {
-    var after, before, first, last, sliceStart, sliceEnd, beforeOffset, afterOffset, startOffset, endOffset, offset, limitIndex, limit, sqlResult, edges, lowerBound, upperBound, lastNodeIndex;
+var connectionToSqlQuery = exports.connectionToSqlQuery = function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(totalCountMaybePromise, args, getDataCb) {
+    var totalCount, after, before, first, last, sliceStart, sliceEnd, beforeOffset, afterOffset, startOffset, endOffset, offset, limitIndex, limit, sqlResult, edges, lowerBound, upperBound, lastNodeIndex;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            _context.next = 2;
+            return totalCountMaybePromise;
+
+          case 2:
+            totalCount = _context.sent;
             after = args.after, before = args.before, first = args.first, last = args.last;
             sliceStart = 0;
             sliceEnd = sliceStart + totalCount;
@@ -30,39 +35,39 @@ var connectionFromPromisedSqlResult = exports.connectionFromPromisedSqlResult = 
             endOffset = Math.min(sliceEnd, beforeOffset, totalCount);
 
             if (!(typeof first === 'number')) {
-              _context.next = 11;
+              _context.next = 14;
               break;
             }
 
             if (!(first < 0)) {
-              _context.next = 10;
+              _context.next = 13;
               break;
             }
 
             throw new Error('Argument "first" must be a non-negative integer');
 
-          case 10:
+          case 13:
 
             endOffset = Math.min(endOffset, startOffset + first);
 
-          case 11:
+          case 14:
             if (!(typeof last === 'number')) {
-              _context.next = 15;
+              _context.next = 18;
               break;
             }
 
             if (!(last < 0)) {
-              _context.next = 14;
+              _context.next = 17;
               break;
             }
 
             throw new Error('Argument "last" must be a non-negative integer');
 
-          case 14:
+          case 17:
 
             startOffset = Math.max(startOffset, endOffset - last);
 
-          case 15:
+          case 18:
             // recalculate slice to offset and limit
             offset = Math.max(startOffset - sliceStart, 0);
             limitIndex = totalCount - (sliceEnd - endOffset);
@@ -71,22 +76,22 @@ var connectionFromPromisedSqlResult = exports.connectionFromPromisedSqlResult = 
             // fetch data from database
 
             if (!(limit === -1 || limit === 0)) {
-              _context.next = 23;
+              _context.next = 26;
               break;
             }
 
             sqlResult = [];
-            _context.next = 26;
+            _context.next = 29;
             break;
 
-          case 23:
-            _context.next = 25;
+          case 26:
+            _context.next = 28;
             return getDataCb({ limit: limit, offset: offset });
 
-          case 25:
+          case 28:
             sqlResult = _context.sent;
 
-          case 26:
+          case 29:
             edges = sqlResult.map(function (row, index) {
               return {
                 cursor: (0, _graphqlRelay.offsetToCursor)(offset + index),
@@ -109,7 +114,7 @@ var connectionFromPromisedSqlResult = exports.connectionFromPromisedSqlResult = 
               edges: edges
             });
 
-          case 31:
+          case 34:
           case "end":
             return _context.stop();
         }
@@ -117,7 +122,7 @@ var connectionFromPromisedSqlResult = exports.connectionFromPromisedSqlResult = 
     }, _callee, undefined);
   }));
 
-  return function connectionFromPromisedSqlResult(_x, _x2, _x3) {
+  return function connectionToSqlQuery(_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 }();
